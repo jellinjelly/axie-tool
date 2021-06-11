@@ -1,9 +1,17 @@
 import {useState, useEffect} from 'react'
 import {useLazyQuery} from '@apollo/client'
 import {Checkbox, FormControl, FormLabel, FormGroup, FormControlLabel, Button, Grid} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 import ALL_AXIES from './query'
 import RadioFilter from './RadioFilter'
+import SliderFilter from './SliderFilter'
 import './filter.css'
+
+const useStyles = makeStyles({
+  root: {
+    margin: "0 auto 30px"
+  }
+})
 
 const Filter = (props) => {
   const [checked, setChecked] = useState({
@@ -21,8 +29,9 @@ const Filter = (props) => {
   const [breedCount, setBreedCount] = useState(null)
   const [mystic, setMystic] = useState(null)
   const [pureness, setPureness] = useState(null)
-  const [getAxies, {loading, data: filteredData}] = useLazyQuery(ALL_AXIES)
+  const [getAxies, { data: filteredData}] = useLazyQuery(ALL_AXIES)
   const {data, setFilteredData} = props
+  const classes = useStyles()
 
   function handleCheckBoxClick(e) {
     setChecked({...checked, [e.target.name]: e.target.checked})
@@ -55,7 +64,7 @@ const Filter = (props) => {
           "pureness": pureness,
           "title": null,
           "breedable": null,
-          "breedCount": null,
+          "breedCount": breedCount,
           "hp": [],
           "skill": [],
           "speed": [],
@@ -119,17 +128,17 @@ const Filter = (props) => {
               })}
             </FormGroup>
           </FormControl>
-
         </Grid>
         <Grid item sm={12} md={8}>
-          <FormControl>
+          <FormControl className={classes.root}>
             <FormLabel>Mystic</FormLabel>
             <RadioFilter count={mystic} setCount={setMystic}/>
           </FormControl>
-          <FormControl>
+          <FormControl className={classes.root}>
             <FormLabel>Pureness</FormLabel>
             <RadioFilter count={pureness} setCount={setPureness}/>
           </FormControl>
+          <SliderFilter breedCount={breedCount} setBreedCount={setBreedCount}/>
         </Grid>
         <Grid item md={1}>
           <Button variant="contained" type="submit" onClick={handleSubmitClick}>Submit</Button>
