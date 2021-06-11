@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ApolloProvider} from '@apollo/client/react'
+import client from './client'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
@@ -15,3 +19,17 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+
+// query EthExchangeRate {
+//   ethExchangeRate {
+//     ...EthExchangeRateType
+//     __typename
+//   }
+// }
+
+// fragment EthExchangeRateType on EthExchangeRate {
+//   Usd
+//   __typename
+// }
