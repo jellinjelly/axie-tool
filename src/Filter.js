@@ -5,6 +5,9 @@ import {makeStyles} from '@material-ui/core/styles'
 import ALL_AXIES from './query'
 import RadioFilter from './RadioFilter'
 import SliderFilter from './SliderFilter'
+import SearchBar from './SearchBar'
+import SearchList from './SearchList'
+// import {tempData} from './data'
 import './filter.css'
 
 const useStyles = makeStyles({
@@ -29,6 +32,7 @@ const Filter = (props) => {
   const [breedCount, setBreedCount] = useState(null)
   const [mystic, setMystic] = useState(null)
   const [pureness, setPureness] = useState(null)
+  const [parts, setParts] = useState(null)
   const [getAxies, { data: filteredData}] = useLazyQuery(ALL_AXIES)
   const {data, setFilteredData} = props
   const classes = useStyles()
@@ -56,7 +60,7 @@ const Filter = (props) => {
         auctionType: 'Sale',
         criteria: {
           "region": null,
-          "parts": null,
+          "parts": parts,
           "bodyShapes": null,
           "classes": selected,
           "stages": null,
@@ -104,6 +108,10 @@ const Filter = (props) => {
     <div className="form-container">
       <Grid container>
         <Grid item sm={12} md={3}>
+          <div>
+            <SearchBar parts={parts} setParts={setParts}/>
+            <SearchList parts={parts} setParts={setParts} />
+          </div>
           <FormControl>
             <FormGroup>
               {species.map((specie, idx) => {
