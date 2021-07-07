@@ -66,7 +66,7 @@ const AxiesList = (props) => {
                     <ListItemText primary={showParts(axie, 5)}/>
                   </Grid>
                   <Grid item xs={2} >
-                    <ListItemText primary={`$${axie.auction.currentPriceUSD}`} />
+                    <ListItemText primary={axie.auction ? `$${axie.auction.currentPriceUSD}` : '-'} />
                   </Grid>
                   {!isAdd && <DeleteOutlinedIcon onClick={e => {handleDeleteClick(e, axie)}}/> }
                 </ListItem>

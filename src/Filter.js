@@ -2,12 +2,12 @@ import {useState, useEffect} from 'react'
 import {useLazyQuery} from '@apollo/client'
 import {Checkbox, FormControl, FormLabel, FormGroup, FormControlLabel, Button, Grid} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import ALL_AXIES from './query'
+import {ALL_AXIES} from './query'
 import RadioFilter from './RadioFilter'
 import SliderFilter from './SliderFilter'
 import SearchBar from './SearchBar'
 import SearchList from './SearchList'
-// import {tempData} from './data'
+import IdFilter from './IdFilter'
 import './filter.css'
 
 const useStyles = makeStyles({
@@ -34,7 +34,7 @@ const Filter = (props) => {
   const [pureness, setPureness] = useState(null)
   const [parts, setParts] = useState(null)
   const [getAxies, { data: filteredData}] = useLazyQuery(ALL_AXIES)
-  const {data, setFilteredData} = props
+  const {data, setFilteredData, filterById} = props
   const classes = useStyles()
 
   function handleCheckBoxClick(e) {
@@ -106,7 +106,7 @@ const Filter = (props) => {
 
   return (
     <div className="form-container">
-      <Grid container>
+      { filterById ? <IdFilter data={data} setFilteredData={setFilteredData}/> : <Grid container>
         <Grid item sm={12} md={3}>
           <div>
             <SearchBar parts={parts} setParts={setParts}/>
@@ -151,7 +151,7 @@ const Filter = (props) => {
         <Grid item md={1}>
           <Button variant="contained" type="submit" onClick={handleSubmitClick}>Submit</Button>
         </Grid>
-      </Grid>
+      </Grid>}
     </div>
   )
 }

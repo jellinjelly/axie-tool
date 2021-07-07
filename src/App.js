@@ -1,10 +1,10 @@
 import {useQuery} from '@apollo/client'
-import {Grid} from '@material-ui/core'
+import {Grid, Button} from '@material-ui/core'
 import {useState, useEffect} from 'react'
 import {ToggleButtonGroup, ToggleButton} from '@material-ui/lab'
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import ALL_AXIES from './query'
+import {ALL_AXIES} from './query'
 import AxiesList from './AxiesList'
 import AxiesGrid from './AxiesGrid'
 import SavedList from './SavedList'
@@ -17,6 +17,7 @@ function App() {
   const [data, setData] = useState([])
   const [filteredData, setFilteredData] = useState([])
   const [saved, setSaved] = useState([])
+  const [filterById, setFilterById] = useState(false)
 
   const axies = useQuery(ALL_AXIES, {
     variables: {
@@ -51,7 +52,8 @@ function App() {
 
   return (
     <div className="App">
-      <Filter data={data} setFilteredData={setFilteredData}/>
+      <Button variant="contained" onClick={() => {setFilterById(!filterById)}}>Filter By ID</Button>
+      <Filter data={data} setFilteredData={setFilteredData} filterById={filterById}/>
       <ToggleButtonGroup value={isGridView} exclusive onChange={setLayoutClick} className="toggleButtons">
         <ToggleButton value={true}>
           <ViewModuleIcon />
