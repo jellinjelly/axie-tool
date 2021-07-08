@@ -7,14 +7,15 @@ import AxieCard from './AxieCard'
 const IdFilter = (props) => {
   const {setFilteredData} = props
   const [axieId, setAxieId] = useState(0)
-  const [getAxies, {data: dataById}] = useLazyQuery(ONE_AXIE)
+  const [getAxieById, {data: dataById}] = useLazyQuery(ONE_AXIE)
+  const [getAxies, {data: similarAxies}] = useLazyQuery(ALL_AXIES)
 
   function handleChange(e) {
     setAxieId(e.target.value)
   }
 
   function handleEnterClick() {
-    getAxies({
+    getAxieById({
       variables: {
         axieId: axieId,
       }
@@ -23,9 +24,39 @@ const IdFilter = (props) => {
 
   useEffect(() => {
     if(dataById && dataById.axie) {
-      setFilteredData([dataById.axie])
+      let parts = dataById.axie.parts.map(part => {
+        return part.id
+      })
+      getAxies({
+        variables: {
+          from: 0,
+          size: 24,
+          sort: "Latest",
+          owner: null,
+          auctionType: 'Sale',
+          criteria: {
+            "region": null,
+            "parts": parts,
+            "bodyShapes": null,
+            "classes": null,
+            "stages": null,
+            "numMystic": null,
+            "pureness": null,
+            "title": null,
+            "breedable": null,
+            "breedCount": null,
+            "hp": [],
+            "skill": [],
+            "speed": [],
+            "morale": []
+          }
+        }
+      })
     }
-  }, [dataById, setFilteredData])
+    if(similarAxies && similarAxies.axies.results) {
+      setFilteredData(similarAxies.axies.results)
+    }
+  }, [dataById, setFilteredData, similarAxies, getAxies])
 
   return (
     <Grid container spacing={3}>

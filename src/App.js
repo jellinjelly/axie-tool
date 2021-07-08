@@ -48,8 +48,6 @@ function App() {
     return <p>Error!</p>
   }
 
-  console.log(filteredData)
-
   return (
     <div className="App">
       <Button variant="contained" onClick={() => {setFilterById(!filterById)}}>Filter By ID</Button>
