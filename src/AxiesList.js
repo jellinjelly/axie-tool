@@ -3,7 +3,9 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import './axies-list.css'
 
 const AxiesList = (props) => {
-  const {data, isAdd, saved, setSaved} = props
+  //isAdd(true) = list for data from API
+  //isAdd(false) = for saved list
+  const {data, isAdd, saved, setSaved, handleOpenModal} = props
 
   function showParts(axie, id) {
     if(axie.parts[0]) {
@@ -43,7 +45,8 @@ const AxiesList = (props) => {
         <List dense={false}>
           {data && data.map(axie => {
               return (
-                <ListItem className="axie-container" key={axie.id} onClick={isAdd ? e => {handleSaveClick(e, axie)} : e => ""}>
+                <ListItem className="axie-container" key={axie.id} onClick={e => {handleOpenModal(e, axie)
+                }}>
                   <Grid item xs={2} >
                     <div className="img-container">
                       <img src={axie.image} alt="adult/egg axie"/>
@@ -68,6 +71,7 @@ const AxiesList = (props) => {
                   <Grid item xs={2} >
                     <ListItemText primary={axie.auction ? `$${axie.auction.currentPriceUSD}` : '-'} />
                   </Grid>
+                  {isAdd && <button onClick={e => {handleSaveClick(e, axie)}}>save</button>}
                   {!isAdd && <DeleteOutlinedIcon onClick={e => {handleDeleteClick(e, axie)}}/> }
                 </ListItem>
               )

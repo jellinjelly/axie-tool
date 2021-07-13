@@ -1,14 +1,15 @@
-import {useQuery} from '@apollo/client'
+import {useQuery, useLazyQuery} from '@apollo/client'
 import {Grid, Button} from '@material-ui/core'
 import {useState, useEffect} from 'react'
 import {ToggleButtonGroup, ToggleButton} from '@material-ui/lab'
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import {ALL_AXIES} from './query'
+import {ALL_AXIES, ONE_AXIE} from './query'
 import AxiesList from './AxiesList'
 import AxiesGrid from './AxiesGrid'
 import SavedList from './SavedList'
 import Filter from './Filter'
+import AxieDescModal from './AxieDescModal'
 import './App.css';
 
 
@@ -18,6 +19,10 @@ function App() {
   const [filteredData, setFilteredData] = useState([])
   const [saved, setSaved] = useState([])
   const [filterById, setFilterById] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [selectedAxieDes, setSelectedAxiedDes] = useState({})
+
+  const [getAxieById, {data: dataById}] = useLazyQuery(ONE_AXIE)
 
   const axies = useQuery(ALL_AXIES, {
     variables: {
@@ -40,6 +45,19 @@ function App() {
     }
   }
 
+  function handleOpenModal(e, axie) {
+    if(e.target.nodeName !== 'BUTTON') {
+      setShowModal(!showModal)
+      setSelectedAxiedDes(axie)
+      //call api for that specific axie stats
+      getAxieById({
+        variables: {
+          axieId: axie.id,
+        }
+      })
+    }
+  }
+
   if(axies.loading) {
     return <p>Loading...</p>
   }
@@ -50,7 +68,8 @@ function App() {
 
   return (
     <div className="App">
-      <Button variant="contained" onClick={() => {setFilterById(!filterById)}}>Filter By ID</Button>
+      {showModal ? <AxieDescModal setShowModal={setShowModal} showModal={showModal} selectedAxieDes={selectedAxieDes} dataById={dataById}/> : <></>}
+      <Button variant="contained" onClick={() => {setFilterById(!filterById)}}>{filterById ? "All Filters" : "Filter By ID"}</Button>
       <Filter data={data} setFilteredData={setFilteredData} filterById={filterById}/>
       <ToggleButtonGroup value={isGridView} exclusive onChange={setLayoutClick} className="toggleButtons">
         <ToggleButton value={true}>
@@ -62,7 +81,7 @@ function App() {
       </ToggleButtonGroup>
       <Grid container>
         <Grid item md={12}>
-          {isGridView ? <AxiesGrid data={filteredData} saved={saved} setSaved={setSaved}/> : <AxiesList data={filteredData} isAdd={true} saved={saved} setSaved={setSaved}/>
+          {isGridView ? <AxiesGrid data={filteredData} saved={saved} setSaved={setSaved} handleOpenModal={handleOpenModal}/> : <AxiesList data={filteredData} isAdd={true} saved={saved} setSaved={setSaved} handleOpenModal={handleOpenModal}/>
           }
         </Grid>
       </Grid>

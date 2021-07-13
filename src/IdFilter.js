@@ -27,6 +27,7 @@ const IdFilter = (props) => {
       let parts = dataById.axie.parts.map(part => {
         return part.id
       })
+      let axieClass = [dataById.axie.class]
       getAxies({
         variables: {
           from: 0,
@@ -38,7 +39,7 @@ const IdFilter = (props) => {
             "region": null,
             "parts": parts,
             "bodyShapes": null,
-            "classes": null,
+            "classes": axieClass,
             "stages": null,
             "numMystic": null,
             "pureness": null,

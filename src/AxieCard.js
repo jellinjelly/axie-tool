@@ -2,7 +2,23 @@ import {Grid, Paper} from '@material-ui/core'
 import './axies-grid.css'
 
 const AxieCard = (props) => {
-  const {axie} = props
+  const {axie, saved, setSaved} = props
+
+  function handleSaveClick(e, axie) {
+    let found = false
+    if(saved.length === 0) {
+      setSaved([axie, ...saved])
+    } else {
+      saved.forEach((item, id, arr) => {
+        if(item.id === axie.id) {
+          found = true
+        }
+      })
+      if(!found) {
+        setSaved([axie, ...saved])
+      }
+    }
+  }
 
   function showParts(axie, id) {
     if(axie.parts && axie.parts[0]) {
@@ -15,12 +31,15 @@ const AxieCard = (props) => {
     <Paper variant="outlined" elevation={3}>
       <Grid container className="id-bc-container">
         <Grid container>
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <p>{`#${axie.id}`}</p>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <p>{`Breed Count: ${axie.breedCount}`}</p>
             <p>{axie.class}</p>
+          </Grid>
+          <Grid item xs={1}>
+            <button onClick={e => {handleSaveClick(e, axie)}}>save</button>
           </Grid>
         </Grid>
         <Grid container className="parts-container">
