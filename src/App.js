@@ -46,7 +46,7 @@ function App() {
   }
 
   function handleOpenModal(e, axie) {
-    if(e.target.nodeName !== 'BUTTON') {
+    if(e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'svg') {
       setShowModal(!showModal)
       setSelectedAxiedDes(axie)
       //call api for that specific axie stats
@@ -87,7 +87,7 @@ function App() {
       </Grid>
       <Grid container>
         <Grid item md={12}>
-          <SavedList saved={saved} setSaved={setSaved}/>
+          <SavedList saved={saved} setSaved={setSaved} handleOpenModal={handleOpenModal}/>
         </Grid>
       </Grid>
     </div>
