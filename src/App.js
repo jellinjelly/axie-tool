@@ -46,7 +46,7 @@ function App() {
   }
 
   function handleOpenModal(e, axie) {
-    if(e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'svg') {
+    if(e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'svg' && e.target.nodeName !== 'path') {
       setShowModal(!showModal)
       setSelectedAxiedDes(axie)
       //call api for that specific axie stats

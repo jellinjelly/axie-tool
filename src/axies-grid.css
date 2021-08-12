@@ -16,3 +16,11 @@ img {
   text-align: center;
   font-size: 13px;
 }
+
+.saveBtn {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  padding: 10px 0 0 10px;
+  z-index: 9;
+}

@@ -1,4 +1,6 @@
 import {Grid, Paper} from '@material-ui/core'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import './axies-grid.css'
 
 const AxieCard = (props) => {
@@ -9,9 +11,12 @@ const AxieCard = (props) => {
     if(saved.length === 0) {
       setSaved([axie, ...saved])
     } else {
+      let newSaved = [...saved]
       saved.forEach((item, id, arr) => {
         if(item.id === axie.id) {
           found = true
+          newSaved.splice(id, 1)
+          setSaved(newSaved)
         }
       })
       if(!found) {
@@ -39,7 +44,7 @@ const AxieCard = (props) => {
             <p>{axie.class}</p>
           </Grid>
           <Grid item xs={1}>
-            <button onClick={e => {handleSaveClick(e, axie)}}>save</button>
+            <button className="saveBtn" onClick={e => {handleSaveClick(e, axie)}}>{saved.includes(axie) ? <FavoriteIcon/> : <FavoriteBorderIcon/>} </button>
           </Grid>
         </Grid>
         <Grid container className="parts-container">

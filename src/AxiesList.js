@@ -1,5 +1,7 @@
 import {Grid, List, ListItem, ListItemText} from '@material-ui/core'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import './axies-list.css'
 
 const AxiesList = (props) => {
@@ -71,7 +73,7 @@ const AxiesList = (props) => {
                   <Grid item xs={2} >
                     <ListItemText primary={axie.auction ? `$${axie.auction.currentPriceUSD}` : '-'} />
                   </Grid>
-                  {isAdd && <button onClick={e => {handleSaveClick(e, axie)}}>save</button>}
+                  {isAdd && <button className="saveBtnList" onClick={e => {handleSaveClick(e, axie)}}> { saved.includes(axie) ? <FavoriteIcon/> : <FavoriteBorderIcon/>} </button>}
                   {!isAdd && <DeleteOutlinedIcon onClick={e => {handleDeleteClick(e, axie)}}/> }
                 </ListItem>
               )
