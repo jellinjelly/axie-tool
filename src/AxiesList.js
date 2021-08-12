@@ -21,9 +21,12 @@ const AxiesList = (props) => {
     if(saved.length === 0) {
       setSaved([axie, ...saved])
     } else {
+      let newSaved = [...saved]
       saved.forEach((item, id, arr) => {
         if(item.id === axie.id) {
           found = true
+          newSaved.splice(id, 1)
+          setSaved(newSaved)
         }
       })
       if(!found) {
